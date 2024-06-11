@@ -49,6 +49,8 @@ pub mod pallet_pink_scorpion {
 
     #[pallet::call]
     impl<T: Config> Pallet<T> {
+        #[pallet::call_index(0)]
+        #[pallet::weight(Weight::from_parts(10_000, 0) + T::DbWeight::get().writes(1))]
         pub fn file_disassembled(
             origin: OriginFor<T>,
             creation_time: Vec<u8>,
@@ -90,6 +92,8 @@ pub mod pallet_pink_scorpion {
             Ok(())
         }
 
+        #[pallet::call_index(1)]
+        #[pallet::weight(Weight::from_parts(10_000, 0) + T::DbWeight::get().writes(1))]
         pub fn file_reassembled(
             origin: OriginFor<T>,
             creation_time: Vec<u8>,
