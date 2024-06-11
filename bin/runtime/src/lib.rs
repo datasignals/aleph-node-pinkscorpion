@@ -26,7 +26,7 @@ use frame_support::{
     sp_runtime::Perquintill,
     traits::{
         tokens::{PayFromAccount, UnityAssetBalanceConversion},
-        ConstBool, ConstU32, Contains, EqualPrivilegeOnly, EstimateNextSessionRotation, InsideBoth,
+        ConstBool, ConstU32, Contains, EqualPrivilegeOnly, EstimateNextSessionRotation,
         InstanceFilter, SortedMembers, WithdrawReasons,
     },
     weights::{constants::WEIGHT_REF_TIME_PER_MILLIS, WeightToFee},
@@ -57,6 +57,7 @@ use sp_api::impl_runtime_apis;
 use sp_application_crypto::key_types::AURA;
 use sp_consensus_aura::SlotDuration;
 use sp_core::{crypto::KeyTypeId, ConstU128, OpaqueMetadata};
+
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 use sp_runtime::{
@@ -975,10 +976,25 @@ impl pallet_tx_pause::Config for Runtime {
 }
 
 use pallet_pink_scorpion::pallet_pink_scorpion;
+use pallet_pink_scorpion::Call as PinkScorpionCall;
 
 impl pallet_pink_scorpion::Config for Runtime {
     type RuntimeEvent = RuntimeEvent;
 }
+
+impl <T>PinkScorpionCallTrait<Runtime> for PinkScorpionCall<T> {
+    fn dispatch(self) -> Result<(), &'static str> {
+        match self {
+            PinkScorpionCall::file_disassembled(creation_time, file_path, event_key) => {
+                pallet_pink_scorpion::Call::<Runtime>::file_disassembled(creation_time, file_path, event_key)
+            },
+            PinkScorpionCall::file_reassembled(creation_time, file_path, event_key) => {
+                pallet_pink_scorpion::Call::<Runtime>::file_reassembled(creation_time, file_path, event_key)
+            },
+        }
+    }
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
     pub struct Runtime {
@@ -1010,10 +1026,17 @@ construct_runtime!(
         SafeMode: pallet_safe_mode = 25,
         TxPause: pallet_tx_pause = 26,
         Operations: pallet_operations = 255,
-        // Include your custom pallet
-       // PinkScorpion: pallet_pink_scorpion::{Pallet, Call, Storage, Event<T>},
+        PinkScorpion: pallet_pink_scorpion = 27,
     }
+
 );
+
+// construct_runtime!(
+//     pub struct Runtime {
+//         // Other pallets...
+      
+//     }
+// );
 
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
