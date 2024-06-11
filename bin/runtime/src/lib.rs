@@ -147,7 +147,7 @@ impl Contains<RuntimeCall> for CallFilter {
 
 impl frame_system::Config for Runtime {
     /// The basic call filter to use in dispatchable.
-    type BaseCallFilter = InsideBoth<CallFilter, InsideBoth<SafeMode, TxPause>>;
+    type BaseCallFilter = frame_support::traits::Everything;
     /// Block & extrinsics weights: base values and limits.
     type BlockWeights = BlockWeights;
     /// The maximum length of a block (in bytes).
@@ -974,9 +974,7 @@ impl pallet_tx_pause::Config for Runtime {
     type WeightInfo = pallet_tx_pause::weights::SubstrateWeight<Runtime>;
 }
 
-
-use pallet_pink_scorpion;
-
+use pallet_pink_scorpion::pallet_pink_scorpion;
 
 impl pallet_pink_scorpion::Config for Runtime {
     type RuntimeEvent = RuntimeEvent;
@@ -1013,7 +1011,7 @@ construct_runtime!(
         TxPause: pallet_tx_pause = 26,
         Operations: pallet_operations = 255,
         // Include your custom pallet
-       // PinkScorpion: pallet_pink_scorpion::{Module, Call, Event},
+       // PinkScorpion: pallet_pink_scorpion::{Pallet, Call, Storage, Event<T>},
     }
 );
 
