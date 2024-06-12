@@ -975,24 +975,12 @@ impl pallet_tx_pause::Config for Runtime {
     type WeightInfo = pallet_tx_pause::weights::SubstrateWeight<Runtime>;
 }
 
+// Import the pallet
 use pallet_pink_scorpion::pallet_pink_scorpion;
-use pallet_pink_scorpion::Call as PinkScorpionCall;
 
+// Configure the pallet
 impl pallet_pink_scorpion::Config for Runtime {
     type RuntimeEvent = RuntimeEvent;
-}
-
-impl <T>PinkScorpionCallTrait<Runtime> for PinkScorpionCall<T> {
-    fn dispatch(self) -> Result<(), &'static str> {
-        match self {
-            PinkScorpionCall::file_disassembled(creation_time, file_path, event_key) => {
-                pallet_pink_scorpion::Call::<Runtime>::file_disassembled(creation_time, file_path, event_key)
-            },
-            PinkScorpionCall::file_reassembled(creation_time, file_path, event_key) => {
-                pallet_pink_scorpion::Call::<Runtime>::file_reassembled(creation_time, file_path, event_key)
-            },
-        }
-    }
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -1031,12 +1019,7 @@ construct_runtime!(
 
 );
 
-// construct_runtime!(
-//     pub struct Runtime {
-//         // Other pallets...
-      
-//     }
-// );
+
 
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (

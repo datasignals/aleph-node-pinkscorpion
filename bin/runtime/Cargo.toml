@@ -43,6 +43,7 @@ pallet-vesting = { workspace = true }
 pallet-safe-mode = { workspace = true }
 pallet-tx-pause = { workspace = true }
 
+
 sp-api = { workspace = true }
 sp-block-builder = { workspace = true }
 sp-consensus-aura = { workspace = true }

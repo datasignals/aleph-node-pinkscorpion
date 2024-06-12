@@ -2,7 +2,6 @@
 
 #[frame_support::pallet]
 pub mod pallet_pink_scorpion {
-    use super::*;
     use frame_support::pallet_prelude::*;
     use frame_system::pallet_prelude::*;
     use scale_info::prelude::vec::Vec;
@@ -11,6 +10,7 @@ pub mod pallet_pink_scorpion {
     #[pallet::pallet]
     #[pallet::without_storage_info]
     pub struct Pallet<T>(_);
+
 
     #[pallet::config]
     pub trait Config: frame_system::Config {
@@ -119,3 +119,4 @@ pub mod pallet_pink_scorpion {
         }
     }
 }
+
