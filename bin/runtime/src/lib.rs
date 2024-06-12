@@ -978,11 +978,10 @@ impl pallet_tx_pause::Config for Runtime {
 // Import the pallet
 use pallet_pink_scorpion::pallet_pink_scorpion;
 
-// Configure the pallet
+// Add your pallet's configuration trait to the runtime
 impl pallet_pink_scorpion::Config for Runtime {
     type RuntimeEvent = RuntimeEvent;
-}
-
+ }
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
     pub struct Runtime {
@@ -1014,7 +1013,7 @@ construct_runtime!(
         SafeMode: pallet_safe_mode = 25,
         TxPause: pallet_tx_pause = 26,
         Operations: pallet_operations = 255,
-        PinkScorpion: pallet_pink_scorpion = 27,
+        PinkScorpion: pallet_pink_scorpion::{Event<T>} = 27 ,
     }
 
 );
